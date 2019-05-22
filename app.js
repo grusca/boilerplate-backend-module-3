@@ -12,6 +12,7 @@ require('dotenv').config();
 
 const auth = require('./routes/auth');
 
+
 mongoose
   .connect(process.env.MONGODB_URI, {
     keepAlive: true,

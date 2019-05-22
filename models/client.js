@@ -1,21 +1,12 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
-  username: {
+const clientSchema = new Schema({
+  firstname: {
     type: String,
-    required: "Username is required"
+    required: "Name is required"
   },
-  password: {
-    type: String,
-    required: "Password is required",
-    validate: [
-      function(input) {
-        return input.length >= 6;
-      },
-      'Password should be longer'
-    ]
-  },
+  lastname: String,
   email: {
     type: String,
     unique: true,
@@ -30,7 +21,7 @@ const userSchema = new Schema({
     City: String,
     Country: String,
   },
-  businessdescription: String,
+    user: { type: Schema.Types.ObjectId, ref: 'User' },
 }, {
   timestamps: {
     createdAt: 'created_at',
@@ -38,6 +29,6 @@ const userSchema = new Schema({
   },
 });
 
-const User = mongoose.model('User', userSchema);
-
-module.exports = User;
+const Client = mongoose.model('Client', clientSchema);
+ 
+module.exports = Client;
