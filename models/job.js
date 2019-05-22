@@ -2,17 +2,18 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const jobSchema = new Schema({
-  jobname: {
+  title: {
     type: String,
     required: "Job name is required"
   },
-  jobdescription: String,
+  description: String,
   status: {
     type: Number,
     max: 5,
   },
   price: Number,
-  amountpaid: Nunmber,
+  amountpaid: Number,
+  image: String,
   client: { type: Schema.Types.ObjectId, ref: 'Client' },
 }, {
   timestamps: {

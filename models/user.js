@@ -27,10 +27,13 @@ const userSchema = new Schema({
   address: {
     number: String,
     street: String,
-    City: String,
-    Country: String,
+    city: String,
+    country: String,
   },
+  businessname: String,
   businessdescription: String,
+  image: String,
+  clients: [{type: Schema.Types.ObjectId, ref: 'Client'}],
 }, {
   timestamps: {
     createdAt: 'created_at',
