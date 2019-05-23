@@ -12,22 +12,20 @@ require('dotenv').config();
 
 const auth = require('./routes/auth');
 
-
+// MONGOOSE CONNECTION
 mongoose
   .connect(process.env.MONGODB_URI, {
     keepAlive: true,
     useNewUrlParser: true,
     reconnectTries: Number.MAX_VALUE,
   })
-  .then(() => {
-    console.log(`Connected to database`);
-  })
-  .catch(error => {
-    console.error(error);
-  });
+  .then( () => console.log(`Connected to database`))
+  .catch( err => console.error(err));
 
+// EXPRESS SERVER INSTANCE
 const app = express();
 
+// CORS MIDDLEWARE SETUP
 app.use(
   cors({
     credentials: true,
@@ -42,6 +40,8 @@ app.use(
 //   next();
 // });
 
+
+// SESSION MIDDLEWARE
 app.use(
   session({
     store: new MongoStore({
@@ -57,14 +57,17 @@ app.use(
   }),
 );
 
+// MIDDLEWARE
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// ROUTER MIDDLEWARE
 app.use('/auth', auth);
 
+// ERROR HANDLING
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   res.status(404).json({ code: 'not found' });
