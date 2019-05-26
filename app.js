@@ -11,6 +11,8 @@ const cors = require('cors');
 require('dotenv').config();
 
 const auth = require('./routes/auth');
+const clientRouter = require('./routes/client-routes');
+const jobRouter = require('./routes/jobs-routes');
 
 // MONGOOSE CONNECTION
 mongoose
@@ -66,6 +68,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // ROUTER MIDDLEWARE
 app.use('/auth', auth);
+app.use('/api', clientRouter);
+app.use('/api', jobRouter);
 
 // ERROR HANDLING
 // catch 404 and forward to error handler

@@ -2,23 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-  username: {
-    type: String,
-    required: "Username is required"
-  },
-  password: {
-    type: String,
-    required: "Password is required",
-    validate: [
-      function(input) {
-        return input.length >= 6;
-      },
-      'Password should be longer'
-    ]
-  },
+  username: String,
+  password: String,
   email: {
     type: String,
-    unique: true,
     match: [/.+@.+\..+/, "Please enter a valid e-mail address"]
   },
   phonenumber: {
@@ -30,7 +17,7 @@ const userSchema = new Schema({
     city: String,
     country: String,
   },
-  businessname: String,
+  company: String,
   businessdescription: String,
   image: String,
   clients: [{type: Schema.Types.ObjectId, ref: 'Client'}],

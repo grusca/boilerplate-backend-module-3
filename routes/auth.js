@@ -14,9 +14,14 @@ router.get('/me', isLoggedIn(), (req, res, next) => {
   res.json(req.session.currentUser);
 });
 
+// GET '/private'  --> Only for testing - Same as /me but it returns a message instead
+router.get('/private', isLoggedIn(), (req, res, next) => {
+  res.status(200).json({ message: 'This is a private message'});
+});
+
 // POST '/signup'
 router.post('/signup', isNotLoggedIn(), validationLoggin(), async (req, res, next) => {
-  const { username, password } = req.body;
+  const { username, password, company } = req.body;
 
   try {
     const userNameExists = await User.findOne({ username }, 'username');
@@ -25,11 +30,9 @@ router.post('/signup', isNotLoggedIn(), validationLoggin(), async (req, res, nex
     } else {
       const salt = bcrypt.genSaltSync(saltRounds);
       const hashPass = bcrypt.hashSync(password, salt);
-      const newUser = await User.create({ username, password: hashPass });
+      const newUser = await User.create({ username, password: hashPass, company });
       req.session.currentUser = newUser;
-      res
-      .status(200)
-      .json(newUser);
+      res.status(200).json(newUser);
     }
   } 
   catch (error) {
@@ -58,18 +61,12 @@ router.post('/login', isNotLoggedIn(), validationLoggin(), async (req, res, next
 );
 
 // POST '/logout'
+
 router.post('/logout', isLoggedIn(), (req, res, next) => {
   req.session.destroy();
-  return res
-  .status(204)
-  .json( { message: `User logged out` } );
+  return res.status(204).send();
 });
 
-// GET '/private'  --> Only for testing - Same as /me but it returns a message instead
-router.get('/private', isLoggedIn(), (req, res, next) => {
-  res
-  .status(200)
-  .json({ message: 'This is a private message'});
-});
+
 
 module.exports = router;
