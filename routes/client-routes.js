@@ -27,7 +27,7 @@ router.post('/clients', (req, res, next) => {
 
 // GET '/api/clients:id' ---- To Search Client By Id
 
-router.get('/clients:id', (req, res, next) => {
+router.get('/clients/:id', (req, res, next) => {
     const { id } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -43,7 +43,7 @@ router.get('/clients:id', (req, res, next) => {
 
 // PUT '/api/clients/:id' ---- To Update Specific Client
 
-router.put('/clients:id', (req, res, next) => {
+router.put('/clients/:id', (req, res, next) => {
     const { id } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -52,11 +52,8 @@ router.put('/clients:id', (req, res, next) => {
     }
 
     Client.findByIdAndUpdate(id, req.body)
-    .then(client => {
-        res
-        .redirect('/clients:id')
-        .status(201)
-        .json({ message: `Client ${id} has been updated!` });
+    .then(() => {
+        res.json({ message: `Client ${id} has been updated!` });
     })
     .catch( err => res.json(err) )
 });
@@ -64,7 +61,7 @@ router.put('/clients:id', (req, res, next) => {
 
 // DELETE '/api/clients/:id' ---- To Delete Specific Client
 
-router.delete('/client:id', (req, res, next) => {
+router.delete('/clients/:id', (req, res, next) => {
     const {id} = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {

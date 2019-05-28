@@ -10,12 +10,14 @@ const Job = require('../models/job-model');
 // POST '/api/jobs' ---- Create New Job
 
 router.post('/jobs', (req, res, next) => {
-        const { title, description, clientID } = req.body;
+        const { title, description, progress, clientID } = req.body;
       
     Job.create({
         title: title,
         description: description,  
-        client: clientID
+        progress: progress, 
+        client: clientID,
+        keycode: Math.random().toString(36).substring(7),
     })
         .then((newJobDocument) => {
     

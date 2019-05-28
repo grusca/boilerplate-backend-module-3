@@ -14,10 +14,10 @@ router.get('/me', isLoggedIn(), (req, res, next) => {
   res.json(req.session.currentUser);
 });
 
-// GET '/private'  --> Only for testing - Same as /me but it returns a message instead
-router.get('/private', isLoggedIn(), (req, res, next) => {
-  res.status(200).json({ message: 'This is a private message'});
-});
+// // GET '/private'  --> Only for testing - Same as /me but it returns a message instead
+// router.get('/private', isLoggedIn(), (req, res, next) => {
+//   res.status(200).json({ message: 'This is a private message'});
+// });
 
 // POST '/signup'
 router.post('/signup', isNotLoggedIn(), validationLoggin(), async (req, res, next) => {

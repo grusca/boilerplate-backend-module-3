@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 const jobSchema = new Schema({
   title: String,
   description: String,
-  status: {
+  keycode: String,
+  progress: {
     type: Number,
     max: 5,
   },
