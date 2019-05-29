@@ -71,6 +71,12 @@ app.use('/auth', auth);
 app.use('/api', clientRouter);
 app.use('/api', jobRouter);
 
+
+app.use((req, res, next) => {
+  // If no routes match, send them the React HTML.
+  res.sendFile(__dirname + "/public/index.html");
+});
+
 // ERROR HANDLING
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

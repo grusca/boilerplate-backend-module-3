@@ -86,4 +86,16 @@ router.delete('/jobs/:id', (req, res) => {
       .catch(err => res.json(err))
   })
 
+
+//   // GET '/api/clients/:clientId/jobs/:jobId' ---- Retrieve Specific Job By keycode
+// router.get('/clients/:clientId/jobs/:jobId', (req, res) => {
+//   const { jobId, keycode } = req.params;
+  
+//   Job.find({keycode: keycode})
+//   .then((foundJob) =>{
+//       res.json(foundJob);
+//   })
+//   .catch( err => res.status(500).json(err))
+// });
+
 module.exports = router;
