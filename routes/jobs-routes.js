@@ -87,15 +87,13 @@ router.delete('/jobs/:id', (req, res) => {
   })
 
 
-//   // GET '/api/clients/:clientId/jobs/:jobId' ---- Retrieve Specific Job By keycode
-// router.get('/clients/:clientId/jobs/:jobId', (req, res) => {
-//   const { jobId, keycode } = req.params;
+  // GET '/api/clients/:clientId/jobs/:jobId' ---- Retrieve Specific Job By keycode
+router.get('/jobs/:keycode', (req, res) => {
+  const { keycode } = req.params;
   
-//   Job.find({keycode: keycode})
-//   .then((foundJob) =>{
-//       res.json(foundJob);
-//   })
-//   .catch( err => res.status(500).json(err))
-// });
+  Job.findOne({keycode})
+  .then( foundJob => res.status(200).json(foundJob))
+  .catch( err => res.status(500).json(err))
+});
 
 module.exports = router;
