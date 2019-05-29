@@ -18,8 +18,8 @@ router.get('/clients', (req, res, next) => {
 // POST '/api/clients' ---- To Create New Clients 
 
 router.post('/clients', (req, res, next) => {
-  const { firstname, lastname } = req.body;
-  Client.create({ firstname, lastname })
+  const { firstname, lastname, phonenumber, email } = req.body;
+  Client.create({ firstname, lastname, phonenumber, email })
     .then( response => res.status(201).json(response))
     .catch( err => console.log(err))
 });

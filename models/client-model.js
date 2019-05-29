@@ -8,9 +8,7 @@ const clientSchema = new Schema({
     type: String,
     match: [/.+@.+\..+/, "Please enter a valid e-mail address"]
   },
-  phonenumber: {
-    type: String,
-  },
+  phonenumber: String,
   address: {
     number: String,
     street: String,
