@@ -8,11 +8,9 @@ const Job = require('../models/job-model');
 
 // GET '/api/clients/:clientId/jobs/:jobId' ---- Retrieve Specific Job
 router.get('/clients/:clientId/jobs/:jobId', (req, res) => {
-  
+  console.log(req.params)
   Job.findById(req.params.jobId)
-  .then((foundJob) =>{
-      res.json(foundJob);
-  })
+  .then(foundJob => res.json(foundJob))
   .catch( err => res.status(500).json(err))
 });
 
@@ -20,37 +18,32 @@ router.get('/clients/:clientId/jobs/:jobId', (req, res) => {
 // POST '/api/jobs' ---- Create New Job
 
 router.post('/jobs', (req, res, next) => {
-        const { title, description, progress, price, clientID } = req.body;
-      
-    Job.create({
-        title: title,
-        description: description,  
-        progress: progress, 
-        price: price, 
-        amountpaid: 0,
-        client: clientID,
-        keycode: Math.random().toString(36).substring(7),
-    })
-        .then((newJobDocument) => {
-    
-        Client.findByIdAndUpdate( clientID, { $push:{ jobs: newJobDocument._id } })
-            .then((theResponse) => {
-            res.status(201).json(theResponse);
-            })
-            .catch(err => res.status(500).json(err))
-    })
-    .catch(err => res.status(500).json(err))
+  const { title, description, progress, price, clientID } = req.body;
+
+  Job.create({
+    title: title,
+    description: description,  
+    progress: progress, 
+    price: price, 
+    amountpaid: 0,
+    client: clientID,
+    keycode: Math.random().toString(36).substring(7),
+  })
+    .then((newJobDocument) => {
+    Client.findByIdAndUpdate( clientID, { $push:{ jobs: newJobDocument._id } })
+      .then(theResponse => res.status(201).json(theResponse))
+      .catch(err => res.status(500).json(err))
+  })
+  .catch(err => res.status(500).json(err))
 });
 
 
 // PUT '/api/jobs/:id' ---- Update Specific Job
-router.put('/jobs/:id', (req, res, next) => {
+router.put('/jobs/:id', (req, res) => {
     const { id } = req.params;
     
     if ( !mongoose.Types.ObjectId.isValid(id) ) {
-      res
-      .status(400)
-      .json({ message: 'Invalid id provided' });
+      res.status(400).json({ message: 'Invalid id provided' });
       return;
     }
   
@@ -90,7 +83,6 @@ router.delete('/jobs/:id', (req, res) => {
   // GET '/api/clients/:clientId/jobs/:jobId' ---- Retrieve Specific Job By keycode
 router.get('/jobs/:keycode', (req, res) => {
   const { keycode } = req.params;
-  
   Job.findOne({keycode})
   .then( foundJob => res.status(200).json(foundJob))
   .catch( err => res.status(500).json(err))

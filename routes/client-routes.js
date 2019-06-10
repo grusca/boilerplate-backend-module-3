@@ -3,31 +3,37 @@ const express = require('express');
 const mongoose = require('mongoose');
 const router  = express.Router();
 const Client = require('../models/client-model');
-
+const User = require('../models/user-model');
 
 
 // GET '/api/clients' ---- To Show All Clients
 
-router.get('/clients', (req, res, next) => {
-  Client.find().populate('jobs')
-      .then( allTheClients => res.json(allTheClients) )
-      .catch( err => res.json(err) )
+router.get('/clients/:userId', (req, res, next) => {
+  const {userId} = req.params
+  Client.find({user: userId})
+    .then( allTheClients => res.json(allTheClients) )
+    .catch( err => res.json(err) )
 });
 
 
 // POST '/api/clients' ---- To Create New Clients 
 
 router.post('/clients', (req, res, next) => {
-  const { firstname, lastname, phonenumber, email } = req.body;
-  Client.create({ firstname, lastname, phonenumber, email })
-    .then( response => res.status(201).json(response))
-    .catch( err => console.log(err))
+  const { firstname, lastname, phonenumber, email, userID } = req.body;
+  Client.create( { firstname, lastname, phonenumber, email, user: userID } )
+    .then((newClientDocument) => {
+    User.findByIdAndUpdate( userID, { $push:{ clients: newClientDocument._id } })
+      .then(theResponse => res.status(201).json(theResponse))
+      .catch(err => res.status(500).json(err))
+  })
+  .catch(err => res.status(500).json(err))
 });
+
 
 
 // GET '/api/clients:id' ---- To Search Client By Id
 
-router.get('/clients/:id', (req, res, next) => {
+router.get('/client/:id', (req, res, next) => {
     const { id } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -52,9 +58,7 @@ router.put('/clients/:id', (req, res, next) => {
     }
 
     Client.findByIdAndUpdate(id, req.body)
-    .then(() => {
-        res.json({ message: `Client ${id} has been updated!` });
-    })
+    .then(() => res.json({ message: `Client ${id} has been updated!` }))
     .catch( err => res.json(err) )
 });
 
@@ -73,5 +77,14 @@ router.delete('/clients/:id', (req, res, next) => {
         .then(() => res.status(202).json({ message: `Client ${id} has been deleted!` } ) )
         .catch( err => res.status(500).json(err))
 })
+
+  // GET  Retrieve clients By Username
+  router.get('/clients/:userID', (req, res) => {
+    const { userID } = req.params;
+
+    Job.find({userID})
+    .then( foundClients => res.status(200).json(foundClients))
+    .catch( err => res.status(500).json(err))
+  });
 
 module.exports = router;

@@ -5,19 +5,18 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const User = require('../models/user-model');
 
+
 //Helper functions
 const { isLoggedIn, isNotLoggedIn, validationLoggin } = require('../helpers/middlewares');
 
+
 // GET '/me'
+
 router.get('/me', isLoggedIn(), (req, res, next) => {
   req.session.currentUser.password = '*';
   res.json(req.session.currentUser);
 });
 
-// // GET '/private'  --> Only for testing - Same as /me but it returns a message instead
-// router.get('/private', isLoggedIn(), (req, res, next) => {
-//   res.status(200).json({ message: 'This is a private message'});
-// });
 
 // POST '/signup'
 router.post('/signup', isNotLoggedIn(), validationLoggin(), async (req, res, next) => {
@@ -41,7 +40,9 @@ router.post('/signup', isNotLoggedIn(), validationLoggin(), async (req, res, nex
 },
 );
 
+
 // POST '/login'
+
 router.post('/login', isNotLoggedIn(), validationLoggin(), async (req, res, next) => {
   const { username, password } = req.body;
   try {
@@ -60,13 +61,12 @@ router.post('/login', isNotLoggedIn(), validationLoggin(), async (req, res, next
 },
 );
 
+
 // POST '/logout'
 
 router.post('/logout', isLoggedIn(), (req, res, next) => {
   req.session.destroy();
   return res.status(204).send();
 });
-
-
 
 module.exports = router;

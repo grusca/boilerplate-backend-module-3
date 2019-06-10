@@ -16,7 +16,7 @@ const clientSchema = new Schema({
     country: String,
   },
   jobs: [{type: Schema.Types.ObjectId, ref: 'Job'}],
-  owner: { type: Schema.Types.ObjectId, ref: 'User' },
+  user: { type: Schema.Types.ObjectId, ref: 'User' },
 }, {
   timestamps: {
   createdAt: 'created_at',
