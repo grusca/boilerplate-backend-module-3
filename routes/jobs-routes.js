@@ -8,7 +8,6 @@ const Job = require('../models/job-model');
 
 // GET '/api/clients/:clientId/jobs/:jobId' ---- Retrieve Specific Job
 router.get('/clients/:clientId/jobs/:jobId', (req, res) => {
-  console.log(req.params)
   Job.findById(req.params.jobId)
   .then(foundJob => res.json(foundJob))
   .catch( err => res.status(500).json(err))

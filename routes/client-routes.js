@@ -6,12 +6,12 @@ const Client = require('../models/client-model');
 const User = require('../models/user-model');
 
 
-// GET '/api/clients' ---- To Show All Clients
+// GET '/api/clients' ---- To Show Clients
 
 router.get('/clients/:userId', (req, res, next) => {
   const {userId} = req.params
   Client.find({user: userId})
-    .then( allTheClients => res.json(allTheClients) )
+    .then( allClients => res.json(allClients) )
     .catch( err => res.json(err) )
 });
 
@@ -22,10 +22,10 @@ router.post('/clients', (req, res, next) => {
   const { firstname, lastname, phonenumber, email, userID } = req.body;
   Client.create( { firstname, lastname, phonenumber, email, user: userID } )
     .then((newClientDocument) => {
-    User.findByIdAndUpdate( userID, { $push:{ clients: newClientDocument._id } })
+      User.findByIdAndUpdate( userID, { $push:{ clients: newClientDocument._id } })
       .then(theResponse => res.status(201).json(theResponse))
       .catch(err => res.status(500).json(err))
-  })
+    })
   .catch(err => res.status(500).json(err))
 });
 
